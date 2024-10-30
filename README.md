@@ -23,7 +23,7 @@ In the file `App.tsx` we have a main screen (home) with a button that pushes a n
 
 When running the app directly and push the "Go to menu" button, we'll see a screen that should contain a red box on top/bottom - but we only see the top one:
 
-![Missing red box at the bottom](docs/menu-wrong.png 'Missing red box at the bottom')
+<img alt="Missing red box at the bottom" src="docs/menu-wrong.png" width="150" />
 
 ### Step 2
 
@@ -87,4 +87,4 @@ const HomePage = () => {
 
 We see a working screen when we press the "Go to menu" button:
 
-![Correct red box at the bottom](docs/menu-correct.png 'Correct red box at the bottom')
+<img alt="Correct red box at the bottom" src="docs/menu-correct.png" width="150" />
