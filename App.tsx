@@ -50,10 +50,6 @@ const HomePage = () => {
         />
         {/** WITH THIS: we see the error in the modal screen */}
         <Animated.View style={animatedStyle}>
-          <Text style={styles.icon}>👎</Text>
-        </Animated.View>
-        {/** WITH THIS: we don't see the error in the modal screen */}
-        <Animated.View>
           <Text style={styles.icon}>👋</Text>
         </Animated.View>
       </View>
