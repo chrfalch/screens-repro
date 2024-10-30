@@ -2,7 +2,10 @@
 
 This is a reproduction for the following issues:
 
+**react-native-screens**
 https://github.com/software-mansion/react-native-screens/issues/2455
+
+**expo**
 https://github.com/expo/expo/issues/32450
 
 Run:
