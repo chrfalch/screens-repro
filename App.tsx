@@ -1,118 +1,99 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Animated, {useAnimatedStyle} from 'react-native-reanimated';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+const Stack = createNativeStackNavigator();
+const MenuStack = createNativeStackNavigator();
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const MenuPage = () => {
+  const navigation = useNavigation();
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={styles.screen}>
+      <View style={styles.box} />
+      <Button title="Close" onPress={navigation.goBack} />
+      <View style={styles.box} />
     </View>
   );
-}
+};
+
+const MenuNavigator = () => {
+  return (
+    <MenuStack.Navigator>
+      <Stack.Screen
+        name="Menu"
+        component={MenuPage}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen name="Settings" component={MenuPage} />
+    </MenuStack.Navigator>
+  );
+};
+
+const HomePage = () => {
+  const {navigate} = useNavigation();
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{rotate: '0deg'}],
+  }));
+  return (
+    <View style={styles.screen}>
+      <View style={styles.container}>
+        <Button
+          title="Go to Menu"
+          onPress={() => {
+            console.log('Go to Menu');
+            // @ts-ignore
+            navigate('Menu');
+          }}
+        />
+        {/** WITH THIS: we see the error in the modal screen */}
+        <Animated.View style={animatedStyle}>
+          <Text style={styles.icon}>👎</Text>
+        </Animated.View>
+        {/** WITH THIS: we don't see the error in the modal screen */}
+        <Animated.View>
+          <Text style={styles.icon}>👋</Text>
+        </Animated.View>
+      </View>
+    </View>
+  );
+};
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomePage} />
+        <Stack.Screen
+          name="Menu"
+          component={MenuNavigator}
+          options={{presentation: 'modal', headerShown: false}}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
+export default App;
+
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  screen: {
+    flex: 1,
+    justifyContent: 'space-between',
+    padding: 20,
+    backgroundColor: 'white',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  container: {
+    flex: 1,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  box: {
+    backgroundColor: 'red',
+    height: 40,
+    width: '100%',
   },
-  highlight: {
-    fontWeight: '700',
+  icon: {
+    fontSize: 28,
   },
 });
-
-export default App;
